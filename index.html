@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 95%;
+            margin: auto;
+        }
+
+        /* Responsive design for different screen sizes */
+        @media (min-width: 640px) {
+            .container {
+                max-width: 75%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 60%;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 50%;
+            }
+        }
+
+        /* Additional mobile-specific styles */
+        .input-container, .button-container, .filter-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .input-container, .button-container, .filter-buttons {
+                flex-direction: row;
+                gap: 1rem;
+            }
+        }
+
+        .task-list-item {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .task-list-item:hover {
+            transform: scale(1.02);
+        }
+
+        .countdown {
+            font-style: italic;
+        }
+
+        .completed-task {
+            background-color: #D1FAE5;
+            color: #047857;
+        }
+
+        .incomplete-task {
+            background-color: #FEE2E2;
+            color: #B91C1C;
+        }
+
+        .pending-task {
+            background-color: #FEF9C3;
+            color: #CA8A04;
+        }
+
+        /* Additional styling for input focus and button hover */
+        input:focus {
+            outline: 2px solid #3B82F6;
+            transition: outline 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #2563EB;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        /* Pinned task styles */
+        .pinned-task {
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 min-h-screen flex items-center justify-center">
+    <div class="container bg-white rounded-lg shadow-2xl p-6 m-4 w-full max-w-4xl">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">To-Do List</h1>
+        
+        <div class="input-container mb-4 flex space-x-2">
+            <input id="searchInput" type="text" placeholder="Search tasks" class="w-full p-2 border rounded">
+        </div>
+
+        <div class="input-container mb-4 flex space-x-2">
+            <input id="taskInput" type="text" placeholder="Enter a new task" class="w-full p-2 border rounded">
+        </div>
+        
+        <div class="button-container mb-4 flex space-x-2">
+            <div class="flex flex-col w-full">
+                <label for="deadlineInput" class="mb-1 text-sm font-medium text-gray-700">Set the Deadline:</label>
+                <input id="deadlineInput" type="datetime-local" class="p-2 border rounded">
+            </div>
+            <button id="addTask" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Add Task</button>
+        </div>
+        
+        <div class="filter-buttons flex space-x-4 mb-4">
+            <button id="showAll" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition duration-300">All</button>
+            <button id="showPending" class="bg-yellow-200 px-4 py-2 rounded hover:bg-yellow-300 transition duration-300">Pending</button>
+            <button id="showCompleted" class="bg-green-200 px-4 py-2 rounded hover:bg-green-300 transition duration-300">Completed</button>
+            <button id="showIncomplete" class="bg-red-200 px-4 py-2 rounded hover:bg-red-300 transition duration-300">Incomplete</button>
+        </div>
+        
+        <ul id="taskList" class="space-y-2"></ul>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div id="editTaskModal" class="modal">
+        <div class="modal-content bg-white rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Edit Task</h2>
+            <input id="editTaskInput" type="text" class="w-full p-2 border rounded mb-4">
+            <input id="editDeadlineInput" type="datetime-local" class="w-full p-2 border rounded mb-4">
+            <div class="flex justify-end space-x-2">
+                <button id="saveEditTask" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Save</button>
+                <button id="cancelEditTask" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition duration-300">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

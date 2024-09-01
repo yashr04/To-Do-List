@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>NextToDo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
@@ -77,7 +77,7 @@
         }
 
         /* Additional styling for input focus and button hover */
-        input:focus {
+        input:focus, textarea:focus {
             outline: 2px solid #3B82F6;
             transition: outline 0.2s ease-in-out;
         }
@@ -114,18 +114,47 @@
         .pinned-task {
             border-left: 4px solid #3B82F6;
         }
+
+        /* Task details modal styles */
+        .task-details-modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .task-details-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .sub-task-list {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 min-h-screen flex items-center justify-center">
     <div class="container bg-white rounded-lg shadow-2xl p-6 m-4 w-full max-w-4xl">
-        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">To-Do List</h1>
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">NextToDo</h1>
         
-        <div class="input-container mb-4 flex space-x-2">
-            <input id="searchInput" type="text" placeholder="Search tasks" class="w-full p-2 border rounded">
-        </div>
+        
 
         <div class="input-container mb-4 flex space-x-2">
             <input id="taskInput" type="text" placeholder="Enter a new task" class="w-full p-2 border rounded">
+        </div>
+        
+        <div class="input-container mb-4 flex space-x-2">
+            <textarea id="taskDescription" placeholder="Task description" class="w-full p-2 border rounded" rows="3"></textarea>
         </div>
         
         <div class="button-container mb-4 flex space-x-2">
@@ -134,6 +163,10 @@
                 <input id="deadlineInput" type="datetime-local" class="p-2 border rounded">
             </div>
             <button id="addTask" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Add Task</button>
+        </div>
+
+        <div class="input-container mb-4 flex space-x-2">
+            <input id="searchInput" type="text" placeholder="Search tasks" class="w-full p-2 border rounded">
         </div>
         
         <div class="filter-buttons flex space-x-4 mb-4">
@@ -146,16 +179,33 @@
         <ul id="taskList" class="space-y-2"></ul>
     </div>
 
-    <!-- Edit Task Modal -->
     <div id="editTaskModal" class="modal">
         <div class="modal-content bg-white rounded-lg p-6">
             <h2 class="text-2xl font-bold mb-4">Edit Task</h2>
-            <input id="editTaskInput" type="text" class="w-full p-2 border rounded mb-4">
+            <input id="editTaskInput" type="text" class="w-full p-2 border rounded mb-4" placeholder="Task title">
+            <textarea id="editTaskDescription" class="w-full p-2 border rounded mb-4" placeholder="Task description" rows="3"></textarea>
             <input id="editDeadlineInput" type="datetime-local" class="w-full p-2 border rounded mb-4">
+            <h3 class="text-xl font-bold mb-2">Sub-tasks</h3>
+            <ul id="editSubTaskList" class="mb-4"></ul>
+            <div class="flex mb-4">
+                <input id="newSubTaskInput" type="text" class="flex-grow p-2 border rounded-l" placeholder="New sub-task">
+                <button id="addSubTask" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 transition duration-300">Add</button>
+            </div>
             <div class="flex justify-end space-x-2">
                 <button id="saveEditTask" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Save</button>
                 <button id="cancelEditTask" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition duration-300">Cancel</button>
             </div>
+        </div>
+    </div>
+
+    <div id="taskDetailsModal" class="task-details-modal">
+        <div class="task-details-content bg-white rounded-lg p-6">
+            <h2 id="taskDetailsTitle" class="text-2xl font-bold mb-4"></h2>
+            <p id="taskDetailsDescription" class="mb-4"></p>
+            <p id="taskDetailsDeadline" class="mb-4"></p>
+            <h3 class="text-xl font-bold mb-2">Sub-tasks</h3>
+            <ul id="taskDetailsSubTasks" class="sub-task-list mb-4"></ul>
+            <button id="closeTaskDetails" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">Close</button>
         </div>
     </div>
 

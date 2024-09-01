@@ -312,30 +312,15 @@ cancelEditTaskBtn.addEventListener('click', closeEditModal);
 addSubTaskBtn.addEventListener('click', addSubTask);
 closeTaskDetailsBtn.addEventListener('click', closeTaskDetails);
 
-function updateCountdown(task, element) {
-    let timer;
-
-    const updateTimer = () => {
-        const now = new Date();
-        const deadline = new Date(task.deadline);
-        const timeDiff = deadline - now;
-
-        if (timeDiff > 0) {
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-            element.textContent = `Time left: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-        } else {
-            element.textContent = 'Deadline passed';
-            clearInterval(timer);
+function updateCountdowns() {
+    tasks.forEach(task => {
+        const element = document.querySelector(`[data-task-id="${task.id}"] .countdown`);
+        if (element) {
+            updateCountdown(task, element);
         }
-    };
-
-    updateTimer();
-    timer = setInterval(updateTimer, 1000);
+    });
 }
 
+setInterval(updateCountdowns, 1000);
+
 renderTasks();
-    

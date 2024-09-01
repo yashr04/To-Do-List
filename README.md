@@ -25,12 +25,12 @@ NextToDo is a simple, yet powerful task management application built with HTML, 
 
 1. Clone the repository:
    \`\`\`
-   git clone https://github.com/yourusername/nexttodo.git
+   git clone https://github.com/yashr04/To-Do-List.git
    \`\`\`
 
 2. Navigate to the project directory:
    \`\`\`
-   cd nexttodo
+   cd To-Do-List
    \`\`\`
 
 3. Open the `index.html` file in your web browser.
@@ -68,10 +68,6 @@ NextToDo is a simple, yet powerful task management application built with HTML, 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
